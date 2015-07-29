@@ -26,9 +26,10 @@ python runserver.py
 ```
 
 ## Configuration
-In **yagcil-server** there are two types of configurations: 
+In *yagcil-server* there are two types of configurations: 
 **debug** and **production** (_yagcil.config.debug_ and _yagcil.config.production_). 
-You can switch between them using **DEBUG** environmental variable. 
+You can switch between them using the **DEBUG** environmental variable. 
+
 By default **debug** config is loaded, set **DEBUG=False** to switch to production.
 
 ### OpenShift
@@ -39,7 +40,7 @@ rhc set-env DEBUG=False -a app
 ## Note
 This app is meant to be running on [OpenShift](http://openshift.com) (wsgi.py), 
 but it can also run on [Heroku](http://heroku.com) (Procfile is needed) 
-or any other cloud hosting with Python2.7 support (should [work on Py3.4 too](http://flask.pocoo.org/docs/0.10/python3/))
+or any other cloud hosting with Python2.7 support (should [work on Py3.x too](http://flask.pocoo.org/docs/0.10/python3/))
 
 ## License
 Copyright (C) 2015  Michał Proszek and Mateusz Maćkowski

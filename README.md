@@ -1,5 +1,5 @@
 # yagcil [![Build Status](https://travis-ci.org/yagcil/yagcil-server.svg)](https://travis-ci.org/yagcil/yagcil-server)
-Yet Another Google Code In Leaderboard - API server
+*Yet Another Google Code In Leaderboard - API server*
 
 ## Technologies
 * Python
@@ -9,7 +9,7 @@ Yet Another Google Code In Leaderboard - API server
 ## Setup
 Make sure you have **Python** and **pip** installed.
 
-The setup is easy a pie, creating **virtualenv** is recommended.
+The setup is easy as pie, creating **virtualenv** is recommended.
 ```
 virtualenv yagcil-server
 cd yagcil-server

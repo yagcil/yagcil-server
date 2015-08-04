@@ -38,11 +38,11 @@ class AbstractError(Exception):
         rv = dict(self.payload or ())
         rv['message'] = self.message
         rv['error'] = {
-            'name': "{0}: {1}".format(
+            'name': "{0}.{1}".format(
                 type(self).__name__,
                 self.error_code.name
             ),
-            'code': self.error_code
+            'code': int(self.error_code)
         }
 
         return rv

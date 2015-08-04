@@ -38,7 +38,9 @@ class OrganizationResource(restful.Resource):
 
         :return dict A dictionary filled with org's information
         """
-        return queryset_to_dict(Organization.objects(name=name, year=year))
+        return Organization.objects(
+            name=name, year=year
+        ).first().to_dict()
 
 
 class TaskResource(restful.Resource):

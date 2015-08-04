@@ -61,7 +61,10 @@ class Crawler(object):
         self.logger.info('Got %d organizations', len(fetched_orgs))
         for fetched_org in fetched_orgs:
             fetched_org = fetched_org.get('columns')
-            org = Organization.objects(name=fetched_org.get('name')).first()
+            org = Organization.objects(
+                name=fetched_org.get('org_id'),
+                year=year
+            ).first()
             if not org:
                 # Add new org
                 org = Organization(

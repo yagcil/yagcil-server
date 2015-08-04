@@ -39,7 +39,7 @@ class Task(me.Document):
     :var categories A list of categories which the task is related to
     :var title Task's title
     """
-    key = me.IntField(required=True)
+    key = me.IntField(required=True, primary_key=True)
     year = me.IntField(required=True)
     org = me.ReferenceField('Organization')
     student = me.StringField(required=True)

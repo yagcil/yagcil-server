@@ -50,4 +50,3 @@ class AbstractError(Exception):
 
 class ResourceNotFound(AbstractError):
     status_code = 404
-

@@ -1,11 +1,11 @@
 import os
 import mongoengine as me
-
 from flask import Flask, jsonify
 from flask.ext import restful
 from flask.ext.cors import CORS
 
 from yagcil.errorhandlers import AbstractError
+
 
 # Create the application
 app = Flask(__name__)
@@ -34,5 +34,6 @@ def handle_api_error(error):
     response.status_code = error.status_code
 
     return response
+
 
 import yagcil.resources

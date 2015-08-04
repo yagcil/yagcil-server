@@ -3,13 +3,15 @@
 """
 from flask.ext import restful
 from flask.ext.restful import reqparse
+
 from yagcil import app, api
-from yagcil.models import Organization, Task
+from yagcil.models import Organization
 from yagcil.helpers import queryset_to_dict
 
 
 class OrganizationListResource(restful.Resource):
     """Get a list of all organizations"""
+
     def __init__(self):
         self.arg_parser = reqparse.RequestParser()
         self.arg_parser.add_argument('year', type=int, help="GCI year")

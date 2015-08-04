@@ -4,6 +4,7 @@ import sys
 import logging
 import argparse
 import json
+
 import requests
 
 from yagcil import app
@@ -153,6 +154,7 @@ def main():
         crawler.fetch_archive()
 
     sys.exit(0)
+
 
 if __name__ == '__main__':
     main()

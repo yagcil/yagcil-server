@@ -66,7 +66,8 @@ class Crawler(object):
                 # Add new org
                 org = Organization(
                     name=fetched_org.get('org_id'),
-                    full_name=fetched_org.get('name')
+                    full_name=fetched_org.get('name'),
+                    year=year
                 )
                 org.save()
 

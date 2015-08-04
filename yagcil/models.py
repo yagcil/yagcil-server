@@ -10,10 +10,12 @@ class Organization(me.Document):
 
     :var name Short name of the organization, e.g., brlcad, sugarlabs
     :var full_name Full (might be unsafe)
+    :var year Year which the org was in
     name of the organization, e.g., BRL-CAD, Sugar Labs
     """
     name = me.StringField(required=True)
     full_name = me.StringField()
+    year = me.IntField(required=True)
 
 
 class Task(me.Document):

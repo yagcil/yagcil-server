@@ -17,6 +17,17 @@ class Organization(me.Document):
     full_name = me.StringField()
     year = me.IntField(required=True)
 
+    def to_dict(self):
+        """Serialize Organization data
+
+        :return dict Serialized Organization data
+        """
+        return {
+            'name': self.name,
+            'fullName': self.full_name,
+            'year': self.year
+        }
+
 
 class Task(me.Document):
     """Task model
@@ -34,3 +45,17 @@ class Task(me.Document):
     student = me.StringField(required=True)
     categories = me.ListField(me.StringField())
     title = me.StringField(required=True)
+
+    def to_dict(self):
+        """Serialize Task data
+
+        :return dict Serialized Task data
+        """
+        return {
+            'id': self.key,
+            'title': self.title,
+            'orgName': self.org.name,
+            'year': self.year,
+            'student': self.student,
+            'categories': self.categories
+        }

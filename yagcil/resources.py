@@ -14,7 +14,12 @@ class OrganizationListResource(restful.Resource):
 
     def __init__(self):
         self.arg_parser = reqparse.RequestParser()
-        self.arg_parser.add_argument('year', type=int, help="GCI year")
+        self.arg_parser.add_argument(
+            'year',
+            type=int,
+            default=max(app.config['YEARS']),
+            help="GCI year"
+        )
 
     def get(self):
         """Get a list of all organizations
@@ -23,8 +28,6 @@ class OrganizationListResource(restful.Resource):
         """
         args = self.arg_parser.parse_args()
         year = args.get('year')
-        if year is None:
-            year = max(app.config['YEARS'])
 
         return queryset_to_dict(Organization.objects(year=year))
 

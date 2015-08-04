@@ -30,7 +30,7 @@ class OrganizationListResource(restful.Resource):
 
 
 class OrganizationResource(restful.Resource):
-    """Get a list of all organizations"""
+    """Get organization data"""
 
     @staticmethod
     def get(name, year):
@@ -39,7 +39,6 @@ class OrganizationResource(restful.Resource):
         :return dict A dictionary filled with org's information
         """
         return queryset_to_dict(Organization.objects(name=name, year=year))
-
 
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')

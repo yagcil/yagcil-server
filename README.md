@@ -25,6 +25,17 @@ After all run the server with following command:
 python runserver.py
 ```
 
+### Database
+Execute **update_db.py** script to update/setup the database.
+#### Usage
+* **--all**          Fetch all years
+* **--active-year**  Fetch active year
+* **--archive**      Fetch all years excluding the active year
+* **-v, --verbose**  Be verbose
+* **-d, --debug**    Enable debug information
+
+The years are set in [Config](#Configuration), **YEARS=** key
+
 ## Configuration
 In **yagcil-server** there are two types of configurations: 
 **debug** and **production** (_yagcil.config.debug_ and _yagcil.config.production_). 

@@ -5,7 +5,7 @@ from flask.ext import restful
 from flask.ext.restful import reqparse
 
 from yagcil import app, api
-from yagcil.models import Organization
+from yagcil.models import Organization, Task
 from yagcil.helpers import queryset_to_dict
 
 
@@ -40,5 +40,20 @@ class OrganizationResource(restful.Resource):
         """
         return queryset_to_dict(Organization.objects(name=name, year=year))
 
+
+class TaskResource(restful.Resource):
+    """Get task's data"""
+
+    @staticmethod
+    def get(task_id):
+        """Get information about a task
+
+        :param task_id int Task id from melange (key)
+        :return dict A dictionary filled with task's data
+        """
+        return Task.objects(key=task_id).first().to_dict()
+
+
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
+api.add_resource(TaskResource, '/task/<int:task_id>')

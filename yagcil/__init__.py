@@ -20,6 +20,7 @@ else:
 
 # Set up the database
 me.connect(
+    app.config['MONGODB_DB_NAME'],
     host=app.config['MONGODB_DB_HOST'],
     port=app.config['MONGODB_DB_PORT'],
     username=app.config['MONGODB_DB_USERNAME'],

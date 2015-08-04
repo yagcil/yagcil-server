@@ -1,5 +1,4 @@
 """Some useful functions"""
-import json
 
 
 def queryset_to_dict(queryset):
@@ -8,4 +7,8 @@ def queryset_to_dict(queryset):
     :param queryset QuerySet A QuerySet to convert
     :return dict Dictionary filled with QuerySet's data
     """
-    return json.loads(queryset.to_json())
+    result = []
+    for item in queryset:
+        result.append(item.to_dict())
+
+    return result

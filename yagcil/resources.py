@@ -2,12 +2,13 @@
     API Server resources
 """
 import mongoengine as me
-
 from flask.ext import restful
+
 from flask.ext.restful import reqparse
 
 from yagcil import app, api
 from yagcil.models import Organization, Task
+from yagcil.errorhandlers import ResourceNotFound, ErrorCode
 from yagcil.helpers import queryset_to_dict
 
 
@@ -43,9 +44,14 @@ class OrganizationResource(restful.Resource):
 
         :return dict A dictionary filled with org's information
         """
-        return Organization.objects(
-            name=name, year=year
-        ).first().to_dict()
+        try:
+            org = Organization.objects.get(
+                name=name, year=year
+            )
+        except me.DoesNotExist:
+            return []
+
+        return org.to_dict()
 
 
 class TaskListResource(restful.Resource):
@@ -113,7 +119,12 @@ class TaskResource(restful.Resource):
         :param task_id int Task id from melange (key)
         :return dict A dictionary filled with task's data
         """
-        return Task.objects(key=task_id).first().to_dict()
+        try:
+            task = Task.objects.get(key=task_id)
+        except me.DoesNotExist:
+            raise ResourceNotFound('Task not found', ErrorCode.TaskNotFound)
+
+        return task.to_dict()
 
 
 api.add_resource(OrganizationListResource, '/organization')

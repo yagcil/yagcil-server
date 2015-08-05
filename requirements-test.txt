@@ -1,1 +1,2 @@
 # Additional packages for testing purposes
+pytest

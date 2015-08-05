@@ -5,6 +5,7 @@ from operator import itemgetter
 
 import mongoengine as me
 from flask.ext import restful
+
 from flask.ext.restful import reqparse
 
 from yagcil import app, api
@@ -100,7 +101,7 @@ class TaskListResource(restful.Resource):
             except me.DoesNotExist:
                 return []
 
-            query = query(org=org)
+            query = query.filter(org=org)
 
         if limit is not None:
             query = query.limit(limit)

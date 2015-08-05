@@ -1,9 +1,10 @@
 """
     API Server resources
 """
+from operator import itemgetter
+
 import mongoengine as me
 from flask.ext import restful
-
 from flask.ext.restful import reqparse
 
 from yagcil import app, api
@@ -127,7 +128,34 @@ class TaskResource(restful.Resource):
         return task.to_dict()
 
 
+class RankResource(restful.Resource):
+    """Get rank for organization/all orgs"""
+
+    @staticmethod
+    def get(name, year):
+        if name.lower() == 'all':
+            tasks = Task.objects(year=year)
+        else:
+            try:
+                org = Organization.objects.get(
+                    name=name, year=year
+                )
+                tasks = Task.objects(org=org)
+            except me.DoesNotExist:
+                return []
+
+        tasks_students = [x.student for x in tasks]
+        rank = []
+        for student in set(tasks_students):
+            rank.append({
+                'student': student,
+                'tasks': tasks_students.count(student)
+            })
+
+        return sorted(rank, key=itemgetter('tasks'), reverse=True)
+
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
+api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')

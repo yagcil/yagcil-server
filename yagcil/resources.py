@@ -155,8 +155,51 @@ class RankResource(restful.Resource):
 
         return sorted(rank, key=itemgetter('tasks'), reverse=True)
 
+
+class RootResource(restful.Resource):
+    """Return links to all entry points"""
+
+    @staticmethod
+    def get():
+        """Return links to all entry points
+
+        :return dict All entry points
+        """
+        entry_points = {
+            'organizationListUrl': RootResource.__get_entry_point(
+                '/organization{?year}'
+            ),
+            'organizationUrl': RootResource.__get_entry_point(
+                '/organization/{name}/{year}'
+            ),
+            'rankUrl': RootResource.__get_entry_point(
+                '/organization/{name}/{year}/rank'
+            ),
+            'taskListUrl': RootResource.__get_entry_point(
+                '/task{?org,year,limit,offset}'
+            ),
+            'taskUrl': RootResource.__get_entry_point(
+                '/task/{id}'
+            )
+        }
+        return entry_points
+
+    @staticmethod
+    def __get_entry_point(resource):
+        """Return an url to API entry point
+
+        :param resource str Resource url to get the entry point
+        :return str Entry point URL
+        """
+        return '{server_name}{resource}'.format(
+            server_name=app.config.get('SERVER_URL'),
+            resource=resource
+        )
+
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
 api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')
+
+api.add_resource(RootResource, '/')

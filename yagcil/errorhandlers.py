@@ -9,6 +9,7 @@ class ErrorCode(IntEnum):
     UndefinedError = -1
     # ResourceNotFound
     TaskNotFound = 10
+    OrgNotFound = 11
 
 
 class AbstractError(Exception):

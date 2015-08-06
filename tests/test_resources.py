@@ -62,16 +62,16 @@ class YagcilTestCase(unittest.TestCase):
 
     def test_organization_list(self):
         rv = self.app.get('/organization')
-        orgs = json.loads(rv.data)
+        orgs = json.loads(rv.data.decode())
         self.assertEqual(len(orgs), self.orgs_added[self.active_year])
 
         rv = self.app.get('/organization?year=2011')
-        orgs = json.loads(rv.data)
+        orgs = json.loads(rv.data.decode())
         self.assertEqual(len(orgs), self.orgs_added[2011])
 
     def test_organization(self):
         rv = self.app.get('/organization/orgc/2011')
-        org = json.loads(rv.data)
+        org = json.loads(rv.data.decode())
 
         self.assertEqual(org['name'], 'orgc')
         self.assertEqual(org['fullName'], 'Org C')
@@ -79,32 +79,32 @@ class YagcilTestCase(unittest.TestCase):
 
     def test_task_list(self):
         rv = self.app.get('/task')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), self.tasks_added[self.active_year])
 
         rv = self.app.get('/task?org=orga')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), self.tasks_added['orga'])
 
         rv = self.app.get('/task?year=2011')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), self.tasks_added[2011])
 
         rv = self.app.get('/task?limit=1')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), 1)
 
         rv = self.app.get('/task?offset=1')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), self.tasks_added['all'] - 1)
 
         rv = self.app.get('/task?student=Student A')
-        tasks = json.loads(rv.data)
+        tasks = json.loads(rv.data.decode())
         self.assertEqual(len(tasks), self.tasks_added['st_A'])
 
     def test_task(self):
         rv = self.app.get('/task/2')
-        task = json.loads(rv.data)
+        task = json.loads(rv.data.decode())
 
         self.assertEqual(task['id'], 2)
         self.assertEqual(task['title'], 'Task B')
@@ -114,12 +114,12 @@ class YagcilTestCase(unittest.TestCase):
 
     def test_rank(self):
         rv = self.app.get('/organization/orga/2012/rank')
-        rank = json.loads(rv.data)
+        rank = json.loads(rv.data.decode())
         self.assertEqual(rank[0]['student'], 'Student A')
         self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A_orga'])
 
         rv = self.app.get('/organization/all/2012/rank')
-        rank = json.loads(rv.data)
+        rank = json.loads(rv.data.decode())
         self.assertEqual(rank[0]['student'], 'Student A')
         self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A'])
         self.assertEqual(rank[1]['student'], 'Student B')
@@ -127,7 +127,7 @@ class YagcilTestCase(unittest.TestCase):
 
     def test_root(self):
         rv = self.app.get('/')
-        root = json.loads(rv.data)
+        root = json.loads(rv.data.decode())
         self.assertGreater(len(root), 0)
 
 

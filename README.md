@@ -48,6 +48,9 @@ By default **debug** config is loaded, set **DEBUG=False** to switch to producti
 rhc set-env DEBUG=False -a app
 ```
 
+## Documentation
+The documentation of *yagcil-server* can be found in [yagcil wiki on GitHub](https://github.com/yagcil/yagcil-server/wiki/API-Documentation#task)
+
 ## Testing
 *yagcil-server* uses [pytest](pytest.org) for testing.
 

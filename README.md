@@ -49,11 +49,9 @@ rhc set-env DEBUG=False -a app
 ```
 
 ## Testing
-*yagcil-server* uses [pytest](pytest.org) for testing, 
-in order to run the tests correctly, **YAGCIL_TEST** environmental variable must be set to **True** (case insensitive)
+*yagcil-server* uses [pytest](pytest.org) for testing.
 
-To run the tests:
-
+In order to run the tests correctly **YAGCIL_TEST** environmental variable must be set to **True** (case insensitive)
 ```
 pip install -r requirements-test.txt
 YAGCIL_TEST=True py.test

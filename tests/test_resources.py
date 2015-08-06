@@ -33,8 +33,8 @@ class YagcilTestCase(unittest.TestCase):
             org.save()
 
         tasks = [
-            Task(key=0, year=2012, org=orgs[0], student='Student A', title='Task A'),
-            Task(key=1, year=2012, org=orgs[1], student='Student B', title='Task A')
+            Task(key=1, year=2012, org=orgs[0], student='Student A', title='Task A'),
+            Task(key=2, year=2012, org=orgs[1], student='Student B', title='Task B')
         ]
         self.tasks_added = {
             2012: 2
@@ -68,6 +68,16 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(org['name'], 'orgc')
         self.assertEqual(org['fullName'], 'Org C')
         self.assertEqual(org['year'], 2011)
+
+    def test_task(self):
+        rv = self.app.get('/task/2')
+        task = json.loads(rv.data)
+
+        self.assertEqual(task['id'], 2)
+        self.assertEqual(task['title'], 'Task B')
+        self.assertEqual(task['student'], 'Student B')
+        self.assertEqual(task['year'], 2012)
+        self.assertEqual(task['orgName'], 'orgb')
 
 
 if __name__ == '__main__':

@@ -41,6 +41,9 @@ class YagcilTestCase(unittest.TestCase):
             'all': 3,
             'orga': 2,
             'orgb': 1,
+            'st_A': 2,
+            'st_B': 1,
+            'st_A_orga': 2,
             2012: 3,
             2011: 0
         }
@@ -105,6 +108,18 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(task['year'], 2012)
         self.assertEqual(task['orgName'], 'orgb')
 
+    def test_rank(self):
+        rv = self.app.get('/organization/orga/2012/rank')
+        rank = json.loads(rv.data)
+        self.assertEqual(rank[0]['student'], 'Student A')
+        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A_orga'])
+
+        rv = self.app.get('/organization/all/2012/rank')
+        rank = json.loads(rv.data)
+        self.assertEqual(rank[0]['student'], 'Student A')
+        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A'])
+        self.assertEqual(rank[1]['student'], 'Student B')
+        self.assertEqual(rank[1]['tasks'], self.tasks_added['st_B'])
 
 if __name__ == '__main__':
     unittest.main()

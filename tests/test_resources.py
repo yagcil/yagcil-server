@@ -121,5 +121,10 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(rank[1]['student'], 'Student B')
         self.assertEqual(rank[1]['tasks'], self.tasks_added['st_B'])
 
+    def test_root(self):
+        rv = self.app.get('/')
+        root = json.loads(rv.data)
+        self.assertGreater(len(root), 0)
+
 if __name__ == '__main__':
     unittest.main()

@@ -34,7 +34,7 @@ Execute **update_db.py** script to update/setup the database.
 * **-v, --verbose**  Be verbose
 * **-d, --debug**    Enable debug information
 
-The years are set in [Config](#Configuration), **YEARS=** key
+The years are set in [Config](#Configuration), **YEARS=** key.
 
 ## Configuration
 In *yagcil-server* there are two types of configurations: 
@@ -49,23 +49,23 @@ rhc set-env DEBUG=False -a app
 ```
 
 ## Documentation
-The documentation of *yagcil-server* can be found in [yagcil wiki on GitHub](https://github.com/yagcil/yagcil-server/wiki/API-Documentation#task)
+The documentation of *yagcil-server* can be found in [yagcil wiki on GitHub](https://github.com/yagcil/yagcil-server/wiki/API-Documentation#task).
 
 ## Testing
 *yagcil-server* uses [pytest](pytest.org) for testing.
 
-In order to run the tests correctly **YAGCIL_TEST** environmental variable must be set to **True** (case insensitive)
+In order to run the tests correctly **YAGCIL_TEST** environmental variable must be set to **True** (case insensitive).
 ```
 pip install -r requirements-test.txt
 YAGCIL_TEST=True py.test
 ```
 
-Testing requires a MongoDB instance running on **localhost:27015** (no auth)
+Testing requires a MongoDB instance running on **localhost:27015** (no auth).
 
 ## Note
 This app is meant to be running on [OpenShift](http://openshift.com) (wsgi.py), 
 but it can also run on [Heroku](http://heroku.com) (Procfile is needed) 
-or any other cloud hosting with Python2.7 support (should [work on Py3.x too](http://flask.pocoo.org/docs/0.10/python3/))
+or any other cloud hosting with Python2.7 support (should [work on Py3.x too](http://flask.pocoo.org/docs/0.10/python3/)).
 
 ## License
 Copyright (C) 2015  Michał Proszek and Mateusz Maćkowski

@@ -48,6 +48,19 @@ By default **debug** config is loaded, set **DEBUG=False** to switch to producti
 rhc set-env DEBUG=False -a app
 ```
 
+## Testing
+*yagcil-server* uses [pytest](pytest.org) for testing, 
+in order to run the tests correctly, **YAGCIL_TEST** environmental variable must be set to **True** (case insensitive)
+
+To run the tests:
+
+```
+pip install -r requirements-test.txt
+YAGCIL_TEST=True py.test
+```
+
+Testing requires a MongoDB instance running on **localhost:27015** (no auth)
+
 ## Note
 This app is meant to be running on [OpenShift](http://openshift.com) (wsgi.py), 
 but it can also run on [Heroku](http://heroku.com) (Procfile is needed) 

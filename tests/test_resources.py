@@ -61,6 +61,14 @@ class YagcilTestCase(unittest.TestCase):
         orgs = json.loads(rv.data)
         self.assertEqual(len(orgs), self.orgs_added[2011])
 
+    def test_organization(self):
+        rv = self.app.get('/organization/orgc/2011')
+        org = json.loads(rv.data)
+
+        self.assertEqual(org['name'], 'orgc')
+        self.assertEqual(org['fullName'], 'Org C')
+        self.assertEqual(org['year'], 2011)
+
 
 if __name__ == '__main__':
     unittest.main()

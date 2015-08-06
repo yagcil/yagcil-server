@@ -202,6 +202,7 @@ class RootResource(restful.Resource):
             resource=resource
         )
 
+
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
 api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')

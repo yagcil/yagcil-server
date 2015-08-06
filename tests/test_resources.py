@@ -126,5 +126,6 @@ class YagcilTestCase(unittest.TestCase):
         root = json.loads(rv.data)
         self.assertGreater(len(root), 0)
 
+
 if __name__ == '__main__':
     unittest.main()

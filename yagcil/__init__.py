@@ -6,9 +6,6 @@ from flask.ext.cors import CORS
 
 from yagcil.errorhandlers import AbstractError
 
-
-
-# Create the application
 app = Flask(__name__)
 cors = CORS(app)
 api = restful.Api(app)

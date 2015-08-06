@@ -98,6 +98,10 @@ class YagcilTestCase(unittest.TestCase):
         tasks = json.loads(rv.data)
         self.assertEqual(len(tasks), self.tasks_added['all'] - 1)
 
+        rv = self.app.get('/task?student=Student A')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), self.tasks_added['st_A'])
+
     def test_task(self):
         rv = self.app.get('/task/2')
         task = json.loads(rv.data)

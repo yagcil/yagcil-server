@@ -65,6 +65,10 @@ class TaskListResource(restful.Resource):
             help="Organization name (default: all tasks)"
         )
         self.arg_parser.add_argument(
+            'student',
+            help="Student whose closed task should be returned"
+        )
+        self.arg_parser.add_argument(
             'year',
             type=int,
             default=max(app.config['YEARS']),
@@ -89,6 +93,7 @@ class TaskListResource(restful.Resource):
         """
         args = self.arg_parser.parse_args()
         org_name = args.get('org')
+        student = args.get('student')
         year = args.get('year')
         limit = args.get('limit')
         offset = args.get('offset')
@@ -101,6 +106,9 @@ class TaskListResource(restful.Resource):
                 return []
 
             query = query.filter(org=org)
+
+        if student:
+            query = query.filter(student=student)
 
         if limit is not None:
             query = query.limit(limit)

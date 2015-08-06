@@ -5,7 +5,6 @@ from operator import itemgetter
 
 import mongoengine as me
 from flask.ext import restful
-
 from flask.ext.restful import reqparse
 
 from yagcil import app, api
@@ -134,6 +133,13 @@ class RankResource(restful.Resource):
 
     @staticmethod
     def get(name, year):
+        """Get rank for a specified organization
+
+        :param name str Organization name, use all to get rank of all orgs
+        :param year int Year of GCI
+        :return:
+        """
+
         if name.lower() == 'all':
             tasks = Task.objects(year=year)
         else:

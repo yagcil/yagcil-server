@@ -42,14 +42,9 @@ def read_requirements(filename='requirements.txt'):
         return list(map(extract_requirement, filter(valid_line, lines)))
 
 
-# setup() call
-
-PROJECT = 'yagcil'
-
 install_requires = read_requirements()
-
 setup(
-    name=PROJECT,
+    name='yagcil-server',
     version='0.0.1',
     description='yagcil web server',
     author='Yagcil Team',

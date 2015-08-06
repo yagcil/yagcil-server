@@ -14,9 +14,9 @@ TEST_DB_NAME = 'yagcil-test'
 class YagcilTestCase(unittest.TestCase):
     def __setupDatabase(self):
         """Connect to the testing database and add some entries"""
-        self.db = me.connect('TEST_DB_NAME')
+        self.db = me.connect(TEST_DB_NAME)
         # Reset the database
-        self.db.drop_database('TEST_DB_NAME')
+        self.db.drop_database(TEST_DB_NAME)
         # Add few test entries to the database
         orgs = [
             Organization(name='orga', full_name='Org A', year=2012),
@@ -34,10 +34,15 @@ class YagcilTestCase(unittest.TestCase):
 
         tasks = [
             Task(key=1, year=2012, org=orgs[0], student='Student A', title='Task A'),
-            Task(key=2, year=2012, org=orgs[1], student='Student B', title='Task B')
+            Task(key=2, year=2012, org=orgs[1], student='Student B', title='Task B'),
+            Task(key=3, year=2012, org=orgs[0], student='Student A', title='Task A')
         ]
         self.tasks_added = {
-            2012: 2
+            'all': 3,
+            'orga': 2,
+            'orgb': 1,
+            2012: 3,
+            2011: 0
         }
         for task in tasks:
             task.save()
@@ -68,6 +73,27 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(org['name'], 'orgc')
         self.assertEqual(org['fullName'], 'Org C')
         self.assertEqual(org['year'], 2011)
+
+    def test_task_list(self):
+        rv = self.app.get('/task')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), self.tasks_added[self.active_year])
+
+        rv = self.app.get('/task?org=orga')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), self.tasks_added['orga'])
+
+        rv = self.app.get('/task?year=2011')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), self.tasks_added[2011])
+
+        rv = self.app.get('/task?limit=1')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), 1)
+
+        rv = self.app.get('/task?offset=1')
+        tasks = json.loads(rv.data)
+        self.assertEqual(len(tasks), self.tasks_added['all'] - 1)
 
     def test_task(self):
         rv = self.app.get('/task/2')

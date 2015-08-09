@@ -130,6 +130,14 @@ class YagcilTestCase(unittest.TestCase):
         root = json.loads(rv.data.decode())
         self.assertGreater(len(root), 0)
 
+    def test_config(self):
+        rv = self.app.get('/config')
+        config = json.loads(rv.data.decode())
+        self.assertDictEqual(config, {
+            'activeYear': self.active_year,
+            'years': self.years
+        })
+
 
 if __name__ == '__main__':
     unittest.main()

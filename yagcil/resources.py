@@ -211,6 +211,16 @@ class RootResource(restful.Resource):
         )
 
 
+class ConfigResource(restful.Resource):
+    """Get yagcil config"""
+
+    @staticmethod
+    def get():
+        return {
+            'activeYear': max(app.config['YEARS']),
+            'years': app.config['YEARS']
+        }
+
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
 api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')
@@ -218,3 +228,4 @@ api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')
 
 api.add_resource(RootResource, '/')
+api.add_resource(ConfigResource, '/config')

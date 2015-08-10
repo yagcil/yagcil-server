@@ -36,6 +36,24 @@ class OrganizationListResource(restful.Resource):
         return queryset_to_dict(Organization.objects(year=year))
 
 
+class AllOrganizationListResource(restful.Resource):
+    """Get a list of all organizations for every year"""
+
+    def get(self):
+        """Get a list of all organizations for every year
+
+        :return list A list of all organizations for every year
+        """
+        result = []
+        for year in app.config['YEARS']:
+            result.append({
+                'year': year,
+                'orgs': queryset_to_dict(Organization.objects(year=year))
+            })
+
+        return result
+
+
 class OrganizationResource(restful.Resource):
     """Get organization data"""
 
@@ -222,6 +240,7 @@ class ConfigResource(restful.Resource):
         }
 
 api.add_resource(OrganizationListResource, '/organization')
+api.add_resource(AllOrganizationListResource, '/organization/all')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
 api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')
 api.add_resource(TaskListResource, '/task')

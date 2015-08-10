@@ -69,6 +69,11 @@ class YagcilTestCase(unittest.TestCase):
         orgs = json.loads(rv.data.decode())
         self.assertEqual(len(orgs), self.orgs_added[2011])
 
+    def test_all_organization_list(self):
+        rv = self.app.get('/organization/all')
+        orgs = json.loads(rv.data.decode())
+        self.assertEqual(len(orgs), 2)
+
     def test_organization(self):
         rv = self.app.get('/organization/orgc/2011')
         org = json.loads(rv.data.decode())

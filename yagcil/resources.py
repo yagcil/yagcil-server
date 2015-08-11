@@ -73,6 +73,40 @@ class OrganizationResource(restful.Resource):
         return org.to_dict()
 
 
+class OrganizationRankResource(restful.Resource):
+    """Get rank for organization/all orgs"""
+
+    @staticmethod
+    def get(name, year):
+        """Get rank for a specified organization
+
+        :param name str Organization name, use all to get rank of all orgs
+        :param year int Year of GCI
+        :return:
+        """
+
+        if name.lower() == 'all':
+            tasks = Task.objects(year=year)
+        else:
+            try:
+                org = Organization.objects.get(
+                    name=name, year=year
+                )
+                tasks = Task.objects(org=org)
+            except me.DoesNotExist:
+                return []
+
+        tasks_students = [x.student for x in tasks]
+        rank = []
+        for student in set(tasks_students):
+            rank.append({
+                'student': student,
+                'tasks': tasks_students.count(student)
+            })
+
+        return sorted(rank, key=itemgetter('tasks'), reverse=True)
+
+
 class TaskListResource(restful.Resource):
     """Get a list of all organizations"""
 
@@ -154,40 +188,6 @@ class TaskResource(restful.Resource):
         return task.to_dict()
 
 
-class RankResource(restful.Resource):
-    """Get rank for organization/all orgs"""
-
-    @staticmethod
-    def get(name, year):
-        """Get rank for a specified organization
-
-        :param name str Organization name, use all to get rank of all orgs
-        :param year int Year of GCI
-        :return:
-        """
-
-        if name.lower() == 'all':
-            tasks = Task.objects(year=year)
-        else:
-            try:
-                org = Organization.objects.get(
-                    name=name, year=year
-                )
-                tasks = Task.objects(org=org)
-            except me.DoesNotExist:
-                return []
-
-        tasks_students = [x.student for x in tasks]
-        rank = []
-        for student in set(tasks_students):
-            rank.append({
-                'student': student,
-                'tasks': tasks_students.count(student)
-            })
-
-        return sorted(rank, key=itemgetter('tasks'), reverse=True)
-
-
 class RootResource(restful.Resource):
     """Return links to all entry points"""
 
@@ -242,7 +242,7 @@ class ConfigResource(restful.Resource):
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(AllOrganizationListResource, '/organization/all')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
-api.add_resource(RankResource, '/organization/<name>/<int:year>/rank')
+api.add_resource(OrganizationRankResource, '/organization/<name>/<int:year>/rank')
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')
 

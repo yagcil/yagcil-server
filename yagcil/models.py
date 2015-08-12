@@ -62,7 +62,16 @@ class Task(me.Document):
 
     @staticmethod
     def count_categories(year, org_name=None, student=None, tasks=None):
-        """Get categories count by an organization or a student"""
+        """Get categories count by an organization or a student
+
+        :param year int GCI Year
+        :param org_name str Organization's name
+        :param student str Student's name
+        :param tasks list(Task) Optional list of tasks to work on
+
+        :return dict A number of tasks in each category
+                     e.g, { 'Category': number of tasks }
+        """
         if tasks is None:
             tasks = Task.objects(year=year)
 

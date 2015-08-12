@@ -59,3 +59,26 @@ class Task(me.Document):
             'student': self.student,
             'categories': self.categories
         }
+
+    @staticmethod
+    def count_categories(year, org_name=None, student=None):
+        """Get categories count by an organization or a student"""
+        tasks = Task.objects(year=year)
+        if org_name is not None:
+            try:
+                org = Organization.objects.get(
+                    name=org_name, year=year
+                )
+                tasks = Task.objects(org=org)
+            except me.DoesNotExist:
+                return []
+
+        if student is not None:
+            tasks = tasks.filter(student=student)
+
+        categories = {}
+        for task in tasks:
+            for category in task.categories:
+                categories[category] = categories.get(category, 0) + 1
+
+        return categories

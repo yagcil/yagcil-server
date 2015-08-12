@@ -61,9 +61,11 @@ class Task(me.Document):
         }
 
     @staticmethod
-    def count_categories(year, org_name=None, student=None):
+    def count_categories(year, org_name=None, student=None, tasks=None):
         """Get categories count by an organization or a student"""
-        tasks = Task.objects(year=year)
+        if tasks is None:
+            tasks = Task.objects(year=year)
+
         if org_name is not None:
             try:
                 org = Organization.objects.get(

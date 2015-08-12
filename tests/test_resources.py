@@ -33,10 +33,20 @@ class YagcilTestCase(unittest.TestCase):
             org.save()
 
         tasks = [
-            Task(key=1, year=2012, org=orgs[0], student='Student A', title='Task A'),
-            Task(key=2, year=2012, org=orgs[1], student='Student B', title='Task B'),
-            Task(key=3, year=2012, org=orgs[0], student='Student A', title='Task A')
+            Task(
+                key=1, year=2012, org=orgs[0], student='Student A',
+                title='Task A', categories=['cat_A']
+            ),
+            Task(
+                key=2, year=2012, org=orgs[1], student='Student B',
+                title='Task B', categories=['cat_A', 'cat_B']
+            ),
+            Task(
+                key=3, year=2012, org=orgs[0], student='Student A',
+                title='Task A'
+            )
         ]
+        self.categories = ['cat_A', 'cat_B']
         self.tasks_added = {
             'all': 3,
             'orga': 2,
@@ -44,6 +54,8 @@ class YagcilTestCase(unittest.TestCase):
             'st_A': 2,
             'st_B': 1,
             'st_A_orga': 2,
+            'cat_A2012': 2,
+            'cat_B2012': 1,
             2012: 3,
             2011: 0
         }
@@ -68,6 +80,16 @@ class YagcilTestCase(unittest.TestCase):
         rv = self.app.get('/organization?year=2011')
         orgs = json.loads(rv.data.decode())
         self.assertEqual(len(orgs), self.orgs_added[2011])
+
+    def test_org_stats(self):
+        year = 2012
+        rv = self.app.get('/organization/all/{year}/stats'.format(year=year))
+        stats = json.loads(rv.data.decode())
+        for category in self.categories:
+            self.assertEqual(
+                stats['categories'][category],
+                self.tasks_added[category + str(year)]
+            )
 
     def test_all_organization_list(self):
         rv = self.app.get('/organization/all')

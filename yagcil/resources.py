@@ -107,6 +107,22 @@ class OrganizationRankResource(restful.Resource):
         return sorted(rank, key=itemgetter('tasks'), reverse=True)
 
 
+class OrganizationStatsResource(restful.Resource):
+    """Return organization statistics"""
+
+    @staticmethod
+    def get(name, year):
+        """Get org stats"""
+        if name.lower() == 'all':
+            categories = Task.count_categories(year)
+        else:
+            categories = Task.count_categories(year=year, org_name=name)
+
+        return {
+            'categories': categories
+        }
+
+
 class TaskListResource(restful.Resource):
     """Get a list of all organizations"""
 
@@ -243,6 +259,8 @@ api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(AllOrganizationListResource, '/organization/all')
 api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
 api.add_resource(OrganizationRankResource, '/organization/<name>/<int:year>/rank')
+api.add_resource(OrganizationStatsResource, '/organization/<name>/<int:year>/stats')
+
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')
 

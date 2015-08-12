@@ -81,7 +81,7 @@ class YagcilTestCase(unittest.TestCase):
         orgs = json.loads(rv.data.decode())
         self.assertEqual(len(orgs), self.orgs_added[2011])
 
-    def test_org_stats(self):
+    def test_organization_stats(self):
         year = 2012
         rv = self.app.get('/organization/all/{year}/stats'.format(year=year))
         stats = json.loads(rv.data.decode())
@@ -90,6 +90,19 @@ class YagcilTestCase(unittest.TestCase):
                 stats['categories'][category],
                 self.tasks_added[category + str(year)]
             )
+
+    def test_organization_rank(self):
+        rv = self.app.get('/organization/orga/2012/rank')
+        rank = json.loads(rv.data.decode())
+        self.assertEqual(rank[0]['student'], 'Student A')
+        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A_orga'])
+
+        rv = self.app.get('/organization/all/2012/rank')
+        rank = json.loads(rv.data.decode())
+        self.assertEqual(rank[0]['student'], 'Student A')
+        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A'])
+        self.assertEqual(rank[1]['student'], 'Student B')
+        self.assertEqual(rank[1]['tasks'], self.tasks_added['st_B'])
 
     def test_all_organization_list(self):
         rv = self.app.get('/organization/all')
@@ -139,18 +152,7 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(task['year'], 2012)
         self.assertEqual(task['orgName'], 'orgb')
 
-    def test_rank(self):
-        rv = self.app.get('/organization/orga/2012/rank')
-        rank = json.loads(rv.data.decode())
-        self.assertEqual(rank[0]['student'], 'Student A')
-        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A_orga'])
-
-        rv = self.app.get('/organization/all/2012/rank')
-        rank = json.loads(rv.data.decode())
-        self.assertEqual(rank[0]['student'], 'Student A')
-        self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A'])
-        self.assertEqual(rank[1]['student'], 'Student B')
-        self.assertEqual(rank[1]['tasks'], self.tasks_added['st_B'])
+    # TODO(poxip): Write tests for StudentResource
 
     def test_root(self):
         rv = self.app.get('/')

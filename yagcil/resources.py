@@ -204,6 +204,33 @@ class TaskResource(restful.Resource):
         return task.to_dict()
 
 
+class StudentResource(restful.Resource):
+    """Return student's stats"""
+
+    @staticmethod
+    def get(name, year, org_name=None):
+        """Get org stats"""
+        tasks = Task.objects(student=name, year=year)
+        if org_name is not None:
+            try:
+                org = Organization.objects.get(
+                    name=org_name, year=year
+                )
+                tasks = tasks.filter(org=org)
+            except me.DoesNotExist:
+                return []
+
+        categories = Task.count_categories(year=year, tasks=tasks)
+
+        return {
+            'student': name,
+            'tasks': [task.to_dict() for task in tasks],
+            'stats': {
+                'categories': categories
+            }
+        }
+
+
 class RootResource(restful.Resource):
     """Return links to all entry points"""
 
@@ -213,6 +240,7 @@ class RootResource(restful.Resource):
 
         :return dict All entry points
         """
+        # TODO(poxip): Update endpoints
         entry_points = {
             'organizationListUrl': RootResource.__get_entry_point(
                 '/organization{?year}'
@@ -263,6 +291,12 @@ api.add_resource(OrganizationStatsResource, '/organization/<name>/<int:year>/sta
 
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')
+
+api.add_resource(
+    StudentResource,
+    '/student/<name>/<int:year>',
+    '/student/<name>/<int:year>/<org_name>/'
+)
 
 api.add_resource(RootResource, '/')
 api.add_resource(ConfigResource, '/config')

@@ -83,7 +83,7 @@ class YagcilTestCase(unittest.TestCase):
 
     def test_organization_stats(self):
         year = 2012
-        rv = self.app.get('/organization/all/{year}/stats'.format(year=year))
+        rv = self.app.get('/organization/{year}/stats'.format(year=year))
         stats = json.loads(rv.data.decode())
         for category in self.categories:
             self.assertEqual(
@@ -92,12 +92,12 @@ class YagcilTestCase(unittest.TestCase):
             )
 
     def test_organization_rank(self):
-        rv = self.app.get('/organization/orga/2012/rank')
+        rv = self.app.get('/organization/2012/orga/rank')
         rank = json.loads(rv.data.decode())
         self.assertEqual(rank[0]['student'], 'Student A')
         self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A_orga'])
 
-        rv = self.app.get('/organization/all/2012/rank')
+        rv = self.app.get('/organization/2012/rank')
         rank = json.loads(rv.data.decode())
         self.assertEqual(rank[0]['student'], 'Student A')
         self.assertEqual(rank[0]['tasks'], self.tasks_added['st_A'])
@@ -110,7 +110,7 @@ class YagcilTestCase(unittest.TestCase):
         self.assertEqual(len(orgs), 2)
 
     def test_organization(self):
-        rv = self.app.get('/organization/orgc/2011')
+        rv = self.app.get('/organization/2011/orgc')
         org = json.loads(rv.data.decode())
 
         self.assertEqual(org['name'], 'orgc')

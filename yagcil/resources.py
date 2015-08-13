@@ -77,7 +77,7 @@ class OrganizationRankResource(restful.Resource):
     """Get rank for organization/all orgs"""
 
     @staticmethod
-    def get(name, year):
+    def get(year, name=None):
         """Get rank for a specified organization
 
         :param name str Organization name, use all to get rank of all orgs
@@ -85,7 +85,7 @@ class OrganizationRankResource(restful.Resource):
         :return:
         """
 
-        if name.lower() == 'all':
+        if name is None:
             tasks = Task.objects(year=year)
         else:
             try:
@@ -111,12 +111,13 @@ class OrganizationStatsResource(restful.Resource):
     """Return organization statistics"""
 
     @staticmethod
-    def get(name, year):
+    def get(year, name=None):
         """Get org stats"""
-        if name.lower() == 'all':
-            categories = Task.count_categories(year)
-        else:
-            categories = Task.count_categories(year=year, org_name=name)
+        args = dict(year=year)
+        if name is not None:
+            args['org_name'] = name
+
+        categories = Task.count_categories(**args)
 
         return {
             'categories': categories
@@ -251,13 +252,13 @@ class RootResource(restful.Resource):
                 '/organization/all'
             ),
             'organizationUrl': RootResource.__get_entry_point(
-                '/organization/{name}/{year}'
+                '/organization/{year}{/name}'
             ),
             'organizationRankUrl': RootResource.__get_entry_point(
-                '/organization/{name}/{year}/rank'
+                '/organization/{year}{/name}/rank'
             ),
             'organizationStatsUrl': RootResource.__get_entry_point(
-                '/organization/{name}/{year}/stats'
+                '/organization/{year}{/name}/stats'
             ),
             'studentUrl': RootResource.__get_entry_point(
                 '/student/{name}/{year}{/org_name}'
@@ -296,9 +297,17 @@ class ConfigResource(restful.Resource):
 
 api.add_resource(OrganizationListResource, '/organization')
 api.add_resource(AllOrganizationListResource, '/organization/all')
-api.add_resource(OrganizationResource, '/organization/<name>/<int:year>')
-api.add_resource(OrganizationRankResource, '/organization/<name>/<int:year>/rank')
-api.add_resource(OrganizationStatsResource, '/organization/<name>/<int:year>/stats')
+api.add_resource(OrganizationResource, '/organization/<int:year>/<name>')
+api.add_resource(
+    OrganizationRankResource,
+    '/organization/<int:year>/rank',
+    '/organization/<int:year>/<name>/rank'
+)
+api.add_resource(
+    OrganizationStatsResource,
+    '/organization/<int:year>/stats',
+    '/organization/<int:year>/<name>/stats'
+)
 
 api.add_resource(TaskListResource, '/task')
 api.add_resource(TaskResource, '/task/<int:task_id>')

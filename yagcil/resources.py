@@ -240,16 +240,27 @@ class RootResource(restful.Resource):
 
         :return dict All entry points
         """
-        # TODO(poxip): Update endpoints
         entry_points = {
+            'configUrl': RootResource.__get_entry_point(
+                '/config'
+            ),
             'organizationListUrl': RootResource.__get_entry_point(
                 '/organization{?year}'
+            ),
+            'organizationListAllUrl': RootResource.__get_entry_point(
+                '/organization/all'
             ),
             'organizationUrl': RootResource.__get_entry_point(
                 '/organization/{name}/{year}'
             ),
-            'rankUrl': RootResource.__get_entry_point(
+            'organizationRankUrl': RootResource.__get_entry_point(
                 '/organization/{name}/{year}/rank'
+            ),
+            'organizationStatsUrl': RootResource.__get_entry_point(
+                '/organization/{name}/{year}/stats'
+            ),
+            'studentUrl': RootResource.__get_entry_point(
+                '/student/{name}/{year}{/org_name}'
             ),
             'taskListUrl': RootResource.__get_entry_point(
                 '/task{?org,year,limit,offset}'

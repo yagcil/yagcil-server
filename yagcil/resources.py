@@ -288,7 +288,7 @@ class RootResource(restful.Resource):
         }
         if args.get('listType').lower() == 'angular-resource':
             # Return the list in Angular Resource style
-            for name, url in entry_points.iteritems():
+            for name, url in entry_points.items():
                 # Remove Query Params
                 url = re.sub(
                     self.list_type_regex['angular']['removeQueryParams'],

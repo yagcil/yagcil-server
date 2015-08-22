@@ -1,6 +1,7 @@
 """
     API Server resources
 """
+import re
 from operator import itemgetter
 
 import mongoengine as me
@@ -235,12 +236,27 @@ class StudentResource(restful.Resource):
 class RootResource(restful.Resource):
     """Return links to all entry points"""
 
-    @staticmethod
-    def get():
+    list_type_regex = {
+        'angular': {
+            'replaceURLParams': re.compile(r'(/\{|\{/)(\w+)(\})'),
+            'removeQueryParams': re.compile(r'\{\?.+\}')
+        }
+    }
+
+    def __init__(self):
+        self.arg_parser = reqparse.RequestParser()
+        self.arg_parser.add_argument(
+            'listType',
+            default='default',
+            help='Optional endpoints list type'
+        )
+
+    def get(self):
         """Return links to all entry points
 
         :return dict All entry points
         """
+        args = self.arg_parser.parse_args()
         entry_points = {
             'configUrl': RootResource.__get_entry_point(
                 '/config'
@@ -270,6 +286,21 @@ class RootResource(restful.Resource):
                 '/task/{id}'
             )
         }
+        if args.get('listType').lower() == 'angular-resource':
+            # Return the list in Angular Resource style
+            for name, url in entry_points.iteritems():
+                # Remove Query Params
+                url = re.sub(
+                    self.list_type_regex['angular']['removeQueryParams'],
+                    '', url
+                )
+                # Replace URL Params
+                url = re.sub(
+                    self.list_type_regex['angular']['replaceURLParams'],
+                    '/:\g<2>', url
+                )
+                entry_points[name] = url
+
         return entry_points
 
     @staticmethod

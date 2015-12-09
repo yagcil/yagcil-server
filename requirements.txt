@@ -4,3 +4,5 @@ Flask-RESTful==0.3.4
 enum34==1.0.4
 mongoengine==0.10.0
 requests==2.7.0
+tornado
+gunicorn

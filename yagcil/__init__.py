@@ -13,13 +13,7 @@ api = restful.Api(app)
 if os.environ.get('DEBUG', 'true').lower() == 'false':
     app.config.from_object('yagcil.config.production')
     # Set up the database
-    me.connect(
-        app.config['MONGODB_DB_NAME'],
-        host=app.config['MONGODB_DB_HOST'],
-        port=app.config['MONGODB_DB_PORT'],
-        username=app.config['MONGODB_DB_USERNAME'],
-        password=app.config['MONGODB_DB_PASSWORD']
-    )
+    me.connect(host=app.config['MONGODB_URI'])
 else:
     app.config.from_object('yagcil.config.debug')
     # If testing is on, let connect to the database later

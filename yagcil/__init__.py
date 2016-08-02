@@ -1,6 +1,6 @@
 import os
 import mongoengine as me
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask.ext import restful
 from flask.ext.cors import CORS
 
@@ -34,5 +34,15 @@ def handle_api_error(error):
 
     return response
 
+
+payu_data = {}
+
+@app.route('/payu_online'):
+def payu_online():
+    payu_data = request.args
+    return ""
+    
+@app.route('/payu'):
+    return payu_data
 
 import yagcil.resources
